@@ -20,9 +20,11 @@ type Suzgec = "acik" | "geciken" | "tamamlandi" | "iptal" | "tumu";
 const acikMi = (s: Siparis) => s.durum !== "tamamlandi" && s.durum !== "iptal";
 const gecikti = (s: Siparis) => acikMi(s) && !!s.istenenTarih && s.istenenTarih < bugun();
 
-const ONCELIK: Partial<Record<Siparis["durum"], number>> = { kargoya_verilecek: 0, kismen_gonderildi: 1 };
+const ONCELIK: Record<Siparis["durum"], number> = {
+  kargoya_verilecek: 0, kismen_gonderildi: 1, uretimde: 2, bekliyor: 3, tamamlandi: 4, iptal: 5,
+};
 const acilisSirasi = (a: Siparis, b: Siparis) =>
-  (ONCELIK[a.durum] ?? 2) - (ONCELIK[b.durum] ?? 2)
+  ONCELIK[a.durum] - ONCELIK[b.durum]
   || (a.istenenTarih ?? "9999").localeCompare(b.istenenTarih ?? "9999")
   || a.tarih.localeCompare(b.tarih);
 

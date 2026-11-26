@@ -264,13 +264,8 @@ public class SiparisServisi(AppDbContext db) : ISiparisServisi
             return "tamamlandi";
         if (gonderilen > 0)
             return "kismen_gonderildi";
-        if (kargoyaVerilecek > 0)
+        if (kargoyaVerilecek > 0 || kalemler.Sum(k => k.Ayrilanlar.Count) > 0)
             return "kargoya_verilecek";
-        var ayrilan = kalemler.Sum(k => k.Ayrilanlar.Count);
-        if (ayrilan >= toplam)
-            return "hazir";
-        if (ayrilan > 0)
-            return "kismen_hazir";
         return kalemler.Any(k => k.Uretimde > 0) ? "uretimde" : "bekliyor";
     }
 }

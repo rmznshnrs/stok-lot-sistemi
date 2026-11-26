@@ -11,8 +11,8 @@ public class RaporServisi(AppDbContext db, IOzetServisi ozet, ISiparisServisi si
 
     private static readonly Dictionary<string, string> SiparisDurumu = new()
     {
-        ["bekliyor"] = "Bekliyor", ["uretimde"] = "Üretimde", ["hazir"] = "Gönderime hazır",
-        ["kismen_hazir"] = "Kısmen hazır", ["kargoya_verilecek"] = "Kargoya verilecek", ["kismen_gonderildi"] = "Kısmen gönderildi", ["tamamlandi"] = "Tamamlandı", ["iptal"] = "İptal edildi",
+        ["bekliyor"] = "Bekliyor", ["uretimde"] = "Üretimde",
+        ["kargoya_verilecek"] = "Kargoya verilecek", ["kismen_gonderildi"] = "Kısmen gönderildi", ["tamamlandi"] = "Tamamlandı", ["iptal"] = "İptal edildi",
     };
     private static readonly Dictionary<string, string> SevkiyatDurumu = new()
     {

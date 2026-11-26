@@ -2067,16 +2067,12 @@ a.satir-bag { color: var(--metin); font-weight: 600; text-decoration: none; }
 .baslik-ozet { display: inline-flex; align-items: baseline; gap: 12px; }
 .rozet--talep-bekliyor { background: #EEF0F2 !important; color: #5B6470; }
 .rozet--talep-uretimde { background: #FDE8D3 !important; color: #9A4A0B; }
-.rozet--talep-kismen_hazir { background: #FCF1C4 !important; color: #806200; }
-.rozet--talep-hazir { background: #EEF6CC !important; color: #5A7410; }
 .rozet--talep-kargoya_verilecek { background: #DFF3D2 !important; color: #3B7418; }
 .rozet--talep-kismen_gonderildi { background: #CDEFD8 !important; color: #17703A; }
 .rozet--talep-tamamlandi { background: #16A34A !important; color: #fff; }
 .rozet--talep-iptal { background: #FDE2E2 !important; color: #B91C1C; }
 :root[data-tema="koyu"] .rozet--talep-bekliyor { background: rgba(148, 163, 184, .18) !important; color: #CBD5E1; }
 :root[data-tema="koyu"] .rozet--talep-uretimde { background: rgba(234, 138, 46, .2) !important; color: #F5B27A; }
-:root[data-tema="koyu"] .rozet--talep-kismen_hazir { background: rgba(232, 185, 35, .2) !important; color: #EDD27A; }
-:root[data-tema="koyu"] .rozet--talep-hazir { background: rgba(163, 201, 58, .2) !important; color: #CDE38A; }
 :root[data-tema="koyu"] .rozet--talep-kargoya_verilecek { background: rgba(109, 190, 69, .2) !important; color: #A9DC8C; }
 :root[data-tema="koyu"] .rozet--talep-kismen_gonderildi { background: rgba(47, 163, 90, .22) !important; color: #86D6A2; }
 :root[data-tema="koyu"] .rozet--talep-tamamlandi { background: #15803D !important; color: #fff; }

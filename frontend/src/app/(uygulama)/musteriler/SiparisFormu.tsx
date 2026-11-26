@@ -32,7 +32,6 @@ export default function SiparisFormu({ musteriId }: { musteriId: number }) {
   const [istenen, setIstenen] = useState("");
   const [aciklama, setAciklama] = useState("");
   const [siparisNo, setSiparisNo] = useState("");
-  const [siraya, setSiraya] = useState(true);
   const [mesaj, setMesaj] = useState<MesajBilgisi | null>(null);
   const [bekliyor, setBekliyor] = useState(false);
 
@@ -75,13 +74,11 @@ export default function SiparisFormu({ musteriId }: { musteriId: number }) {
         siparisNo: siparisNo.trim(),
       });
       const uyarilar: string[] = [];
-      if (siraya) {
-        for (const k of s.kalemler.filter((x) => x.eksik > 0)) {
-          try {
-            await sira.ekle({ urunId: k.urunId, siparisKalemiId: k.id, planlananTarih: istenen || bugun() });
-          } catch (err) {
-            uyarilar.push(`${k.urunAd}: ${err instanceof ApiHatasi ? err.message : "sıraya eklenemedi"}`);
-          }
+      for (const k of s.kalemler.filter((x) => x.eksik > 0)) {
+        try {
+          await sira.ekle({ urunId: k.urunId, siparisKalemiId: k.id, planlananTarih: istenen || bugun() });
+        } catch (err) {
+          uyarilar.push(`${k.urunAd}: ${err instanceof ApiHatasi ? err.message : "sıraya eklenemedi"}`);
         }
       }
       router.push(`${siparisAdresi(s.id)}${uyarilar.length ? `&uyari=${encodeURIComponent(uyarilar.join(" | "))}` : ""}`);
@@ -131,9 +128,6 @@ export default function SiparisFormu({ musteriId }: { musteriId: number }) {
           </button>
         </div>
 
-        <label className="onay-etiket">
-          <input type="checkbox" checked={siraya} onChange={(e) => setSiraya(e.target.checked)} /> Depoda olmayanları kaydedince üretime gönder
-        </label>
         <div className="kart-alt">
           <span />
           <button type="submit" className="btn" disabled={bekliyor}>{bekliyor ? "Kaydediliyor…" : "Talebi Kaydet"}</button>
