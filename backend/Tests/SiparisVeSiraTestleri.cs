@@ -174,6 +174,29 @@ public class SiparisTestleri(TestVeritabani vt) : IsKuraliTesti(vt)
     }
 
     [Fact]
+    public async Task Numaralar_tire_bosluk_ve_harf_buyuklugu_yok_sayilarak_karsilastirilir()
+    {
+        await Assert.ThrowsAsync<IsKuraliHatasi>(() => Stok.MalGirisiAsync(
+            new MalGirisiIstek(Diyot.Id, "Tedarikçi A", "ld yeni", 5, new(2026, 11, 1)), Kullanici.Id));
+        var kontrol = new KontrolServisi(Db);
+        Assert.True((await kontrol.NumaraAsync("lot", "L.D-YENI")).Kullaniliyor);
+        Assert.False((await kontrol.NumaraAsync("lot", "L-D-YENİ2")).Kullaniliyor);
+        Assert.False((await kontrol.NumaraAsync("lot", "--")).Kullaniliyor);
+
+        await Siparis.OlusturAsync(new SiparisIstek(Musteri.Id, [new SiparisKalemiIstek(Urun.Id, 1)], SiparisNo: "45-001"), Kullanici.Id);
+        await Assert.ThrowsAsync<IsKuraliHatasi>(() => Siparis.OlusturAsync(
+            new SiparisIstek(Musteri.Id, [new SiparisKalemiIstek(Urun.Id, 1)], SiparisNo: "45 001"), Kullanici.Id));
+        Assert.True((await kontrol.NumaraAsync("siparis", "45001")).Kullaniliyor);
+
+        var tanim = new TanimServisi(Db, Stok);
+        await Assert.ThrowsAsync<IsKuraliHatasi>(() => tanim.ParcaOlusturAsync(new ParcaIstek("d-i-y", "Kopya")));
+        var e = await Sira.EkleAsync(new UretimEmriIstek(Urun.Id, 2), Kullanici.Id);
+        await Sira.UretAsync(e.Id, new EmirUretIstek(1, ["EL-01"]), Kullanici.Id);
+        await Assert.ThrowsAsync<IsKuraliHatasi>(() => Sira.UretAsync(e.Id, new EmirUretIstek(1, ["el01"]), Kullanici.Id));
+        Assert.True((await kontrol.NumaraAsync("seri", "EL 01")).Kullaniliyor);
+    }
+
+    [Fact]
     public async Task Talep_isleri_siraya_talep_tarihine_gore_girer()
     {
         var gec = await Siparis.OlusturAsync(new SiparisIstek(Musteri.Id, [new SiparisKalemiIstek(Urun.Id, 1)], Tarih: new(2026, 12, 10)), Kullanici.Id);

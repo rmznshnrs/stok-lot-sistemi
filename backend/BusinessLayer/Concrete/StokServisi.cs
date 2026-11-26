@@ -90,7 +90,7 @@ public class StokServisi(AppDbContext db) : IStokServisi
             var parca = await db.Parcalar.SingleOrDefaultAsync(p => p.Id == istek.ParcaId, ct)
                         ?? throw new BulunamadiHatasi("Parça bulunamadı.");
             var lotNo = verilenNo.Length > 0 ? verilenNo : await SonrakiStokGirisNoAsync(ct);
-            if (await db.StokLotlari.AnyAsync(l => l.LotNo == lotNo, ct))
+            if (await db.StokLotlari.AnyAsync(Numara.Ayni<StokLotu>(l => l.LotNo, lotNo), ct))
                 throw new IsKuraliHatasi($"{lotNo} lot numarası zaten kayıtlı.");
 
             var tedarikci = await db.Tedarikciler.SingleOrDefaultAsync(t => t.Ad == tedarikciAdi, ct);

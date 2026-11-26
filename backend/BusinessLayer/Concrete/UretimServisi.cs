@@ -107,10 +107,13 @@ public class UretimServisi(AppDbContext db, IStokLotuRepository lotlar, IUretimR
                 throw new IsKuraliHatasi($"{adet} ürün için {adet} seri no girin.");
             if (elleSeriler.Any(s => s.Length > 50))
                 throw new IsKuraliHatasi("Seri no en fazla 50 karakter olabilir.");
-            var tekrar = elleSeriler.GroupBy(s => s).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+            var tekrar = elleSeriler.GroupBy(Numara.Sade).Where(g => g.Count() > 1).Select(g => string.Join(" / ", g)).ToList();
             if (tekrar.Count > 0)
                 throw new IsKuraliHatasi($"Aynı seri no iki kez yazıldı: {string.Join(", ", tekrar)}");
-            var kullanilan = await db.Uretimler.Where(x => elleSeriler.Contains(x.SeriNo)).Select(x => x.SeriNo).ToListAsync(ct);
+            var sadeler = elleSeriler.Select(Numara.Sade).ToList();
+            var kullanilan = await db.Uretimler
+                .Where(x => sadeler.Contains(x.SeriNo.Replace("-", "").Replace(" ", "").Replace(".", "").Replace("/", "").Replace("_", "").Replace("\\", "")))
+                .Select(x => x.SeriNo).ToListAsync(ct);
             if (kullanilan.Count > 0)
                 throw new IsKuraliHatasi($"Bu seri no daha önce kullanıldı: {string.Join(", ", kullanilan.Order())}");
         }

@@ -14,8 +14,7 @@ export const talepAdi = (musteriAd: string | null, talepTarihi: string | null) =
   `${musteriAd ?? ""}${talepTarihi ? ` · ${tarih(talepTarihi)} talebi` : ""}`;
 
 export function durumRozeti(s: Siparis) {
-  const renk = s.durum === "tamamlandi" || s.durum === "hazir" ? "rozet--basari" : s.durum === "iptal" ? "" : "rozet--uyari";
-  return <span className={`rozet rozet--kucuk ${renk}`}>{SIPARIS_DURUM_ADI[s.durum]}</span>;
+  return <span className={`rozet rozet--kucuk rozet--talep-${s.durum}`}>{SIPARIS_DURUM_ADI[s.durum]}</span>;
 }
 
 export default function MusteriSiparisleri({ musteriId }: { musteriId: number }) {

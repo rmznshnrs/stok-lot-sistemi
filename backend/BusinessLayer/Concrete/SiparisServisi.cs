@@ -67,7 +67,7 @@ public class SiparisServisi(AppDbContext db) : ISiparisServisi
 
     private async Task SiparisNoBenzersizAsync(string no, int haricId, CancellationToken ct)
     {
-        if (no.Length > 0 && await db.Siparisler.AnyAsync(x => x.SiparisNo == no && x.Id != haricId, ct))
+        if (Numara.Sade(no).Length > 0 && await db.Siparisler.Where(x => x.Id != haricId).AnyAsync(Numara.Ayni<Siparis>(x => x.SiparisNo, no), ct))
             throw new IsKuraliHatasi($"{no} sipariş no başka bir talepte kullanılıyor.");
     }
 

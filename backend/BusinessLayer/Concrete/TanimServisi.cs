@@ -33,7 +33,7 @@ public class TanimServisi(AppDbContext db, IStokServisi stok) : ITanimServisi
             var parca = id is null
                 ? db.Parcalar.Add(new Parca { Kod = kod, Ad = ad }).Entity
                 : await db.Parcalar.SingleOrDefaultAsync(p => p.Id == id, ct) ?? throw new BulunamadiHatasi("Parça bulunamadı.");
-            if (await db.Parcalar.AnyAsync(p => p.Kod == kod && p.Id != parca.Id, ct))
+            if (await db.Parcalar.Where(p => p.Id != parca.Id).AnyAsync(Numara.Ayni<Parca>(p => p.Kod, kod), ct))
                 throw new IsKuraliHatasi("Bu kodla bir parça zaten var.");
             (parca.Kod, parca.Ad, parca.MinStok, parca.Aciklama) = (kod, ad, istek.MinStok, aciklama);
             await db.SaveChangesAsync(ct);
@@ -87,7 +87,7 @@ public class TanimServisi(AppDbContext db, IStokServisi stok) : ITanimServisi
                 ? db.Urunler.Add(new Urun { Kod = kod, Ad = ad, SeriOneki = "" }).Entity
                 : await db.Urunler.SingleOrDefaultAsync(u => u.Id == id, ct) ?? throw new BulunamadiHatasi("Ürün bulunamadı.");
             var onek = verilenOnek.Length > 0 ? verilenOnek : id is null ? kod + "-" : urun.SeriOneki;
-            if (await db.Urunler.AnyAsync(u => u.Kod == kod && u.Id != urun.Id, ct))
+            if (await db.Urunler.Where(u => u.Id != urun.Id).AnyAsync(Numara.Ayni<Urun>(u => u.Kod, kod), ct))
                 throw new IsKuraliHatasi("Bu kodla bir ürün zaten var.");
             if (await db.Urunler.AnyAsync(u => u.SeriOneki == onek && u.Id != urun.Id, ct))
                 throw new IsKuraliHatasi(verilenOnek.Length > 0

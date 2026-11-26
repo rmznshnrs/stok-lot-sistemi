@@ -161,3 +161,24 @@ internal static class Kullanicilar
         return k;
     }
 }
+
+internal static class Numara
+{
+    private static readonly string[] Ayiraclar = ["-", " ", ".", "/", "_", "\\"];
+    private static readonly System.Reflection.MethodInfo Degistir = typeof(string).GetMethod(nameof(string.Replace), [typeof(string), typeof(string)])!;
+
+    public static string Sade(string? deger) =>
+        Ayiraclar.Aggregate((deger ?? "").Trim(), (s, a) => s.Replace(a, ""));
+
+    public static System.Linq.Expressions.Expression<Func<T, bool>> Ayni<T>(
+        System.Linq.Expressions.Expression<Func<T, string?>> alan, string? deger)
+    {
+        System.Linq.Expressions.Expression govde = alan.Body;
+        foreach (var a in Ayiraclar)
+            govde = System.Linq.Expressions.Expression.Call(govde, Degistir,
+                System.Linq.Expressions.Expression.Constant(a), System.Linq.Expressions.Expression.Constant(""));
+        var esit = System.Linq.Expressions.Expression.Equal(govde,
+            System.Linq.Expressions.Expression.Constant(Sade(deger), typeof(string)));
+        return System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(esit, alan.Parameters);
+    }
+}

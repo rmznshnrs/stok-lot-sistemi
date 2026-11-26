@@ -166,7 +166,7 @@ public class SevkiyatServisi(AppDbContext db) : ISevkiyatServisi
             return null;
         if (no.Length > 20)
             throw new IsKuraliHatasi("Sevkiyat no en fazla 20 karakter olabilir.");
-        if (await db.Satislar.AnyAsync(x => x.No == no && x.Id != id, ct))
+        if (await db.Satislar.Where(x => x.Id != id).AnyAsync(Numara.Ayni<Satis>(x => x.No, no), ct))
             throw new IsKuraliHatasi("Bu sevkiyat no başka bir sevkiyatta kullanılıyor.");
         return no;
     }
