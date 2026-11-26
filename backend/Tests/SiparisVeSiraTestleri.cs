@@ -174,6 +174,17 @@ public class SiparisTestleri(TestVeritabani vt) : IsKuraliTesti(vt)
     }
 
     [Fact]
+    public async Task Talep_isleri_siraya_talep_tarihine_gore_girer()
+    {
+        var gec = await Siparis.OlusturAsync(new SiparisIstek(Musteri.Id, [new SiparisKalemiIstek(Urun.Id, 1)], Tarih: new(2026, 12, 10)), Kullanici.Id);
+        var a = await Sira.EkleAsync(new UretimEmriIstek(Urun.Id, 1, gec.Kalemler[0].Id), Kullanici.Id);
+        var stok = await Sira.EkleAsync(new UretimEmriIstek(Urun.Id, 1), Kullanici.Id);
+        var erken = await Siparis.OlusturAsync(new SiparisIstek(Musteri.Id, [new SiparisKalemiIstek(Urun.Id, 1)], Tarih: new(2026, 12, 1)), Kullanici.Id);
+        var b = await Sira.EkleAsync(new UretimEmriIstek(Urun.Id, 1, erken.Kalemler[0].Id), Kullanici.Id);
+        Assert.Equal([b.Id, a.Id, stok.Id], (await Sira.ListeAsync()).Select(e => e.Id));
+    }
+
+    [Fact]
     public async Task Hazir_seri_ayrilir_eksik_siradan_uretilip_kaleme_gelir()
     {
         var s = await Siparis.OlusturAsync(new SiparisIstek(Musteri.Id,

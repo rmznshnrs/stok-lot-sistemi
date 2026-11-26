@@ -2055,3 +2055,13 @@ a.satir-bag { color: var(--metin); font-weight: 600; text-decoration: none; }
 .satir-ekle--orta > label { margin: 0; }
 
 .eskiler-satiri { display: flex; justify-content: center; padding: 10px 0 4px; }
+
+.panel.panel--dikkat, .panel.panel--gecikme { background: var(--hata-zemin); border-color: #F09595; }
+.panel--dikkat .tablo-kap .tablo thead th, .panel--gecikme .tablo-kap .tablo thead th { background: var(--hata-zemin); }
+.panel--dikkat .uyari-karti { background: var(--kart); border-color: #F5B5B5; color: var(--metin); }
+.panel--dikkat .uyari-karti--kritik { background: var(--kart); border-color: #E57373; }
+.panel--dikkat .uyari-karti-sayi { background: #DC2626; }
+.panel--dikkat .uyari-karti--kritik .uyari-karti-sayi { background: #991B1B; }
+.panel--dikkat .uyari-karti--bag:hover { border-color: #DC2626; }
+.panel--dikkat .rozet--uyari { background: var(--kart) !important; color: #B91C1C; }
+.baslik-ozet { display: inline-flex; align-items: baseline; gap: 12px; }

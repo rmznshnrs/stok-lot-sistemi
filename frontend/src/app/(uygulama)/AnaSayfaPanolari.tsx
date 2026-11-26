@@ -65,12 +65,15 @@ export function OnumuzdekiGunler() {
 }
 
 export function SiradakiIsler() {
-  const { veri: liste, hata } = useVeri(() => sira.liste(), []);
+  const { veri: tumu, hata } = useVeri(() => sira.liste(), []);
+  const liste = tumu && [...tumu].sort((a, b) => a.planlananTarih.localeCompare(b.planlananTarih) || a.sira - b.sira);
   return (
     <section className="panel">
       <div className="panel-bas">
-        <h3>Üretim Sırası</h3>
-        {liste && <span className="ozet">{liste.length} iş · {liste.reduce((t, e) => t + e.adet - e.uretilen, 0)} adet</span>}
+        <span className="baslik-ozet">
+          <h3>Üretim Sırası</h3>
+          {liste && <span className="ozet">{liste.length} iş · {liste.reduce((t, e) => t + e.adet - e.uretilen, 0)} adet</span>}
+        </span>
         <Link href="/uretim" className="btn btn--ikincil btn--kucuk">Sırayı Aç</Link>
       </div>
       {hata && <div className="panel-ic"><div className="mesaj mesaj--error">{hata}</div></div>}

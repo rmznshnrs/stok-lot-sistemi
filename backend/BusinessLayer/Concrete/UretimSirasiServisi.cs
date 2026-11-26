@@ -108,8 +108,7 @@ public class UretimSirasiServisi(AppDbContext db, IStokLotuRepository lotlar, IU
             if (eksikler.Count > 0)
                 throw new YetersizStokHatasi(eksikler);
 
-            var sira = (await db.UretimEmirleri.Where(e => e.Durum == UretimEmriDurumu.Bekliyor)
-                .MaxAsync(e => (int?)e.Sira, ct) ?? 0) + 1;
+            var sira = await TalepSirasiAsync(kalem?.Siparis!.Tarih, ct);
             var emir = new UretimEmri
             {
                 Urun = urun, Adet = adet, Sira = sira, PlanlananTarih = istek.PlanlananTarih ?? Zaman.Bugun(),
@@ -121,6 +120,21 @@ public class UretimSirasiServisi(AppDbContext db, IStokLotuRepository lotlar, IU
             await db.SaveChangesAsync(ct);
             return await GetirAsync(emir.Id, ct);
         }, ct);
+
+    private async Task<int> TalepSirasiAsync(DateOnly? talepTarihi, CancellationToken ct)
+    {
+        var bekleyen = db.UretimEmirleri.Where(e => e.Durum == UretimEmriDurumu.Bekliyor);
+        var son = (await bekleyen.MaxAsync(e => (int?)e.Sira, ct) ?? 0) + 1;
+        if (talepTarihi is not { } t)
+            return son;
+        var sonraki = await bekleyen
+            .Where(e => e.SiparisKalemi == null || e.SiparisKalemi.Siparis!.Tarih > t)
+            .MinAsync(e => (int?)e.Sira, ct);
+        if (sonraki is not { } yer)
+            return son;
+        await bekleyen.Where(e => e.Sira >= yer).ExecuteUpdateAsync(x => x.SetProperty(e => e.Sira, e => e.Sira + 1), ct);
+        return yer;
+    }
 
     public Task<UretimSonucuDto> UretAsync(int id, EmirUretIstek istek, int kullaniciId, CancellationToken ct = default) =>
         Islem.CalistirAsync(db, async () =>
