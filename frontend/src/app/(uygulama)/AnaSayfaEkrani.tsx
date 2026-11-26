@@ -13,7 +13,7 @@ export default function AnaSayfaEkrani() {
     { ad: "Üretim sırasındaki ürün", deger: o?.siradakiAdet, alt: o && `${o.siradakiIs} iş · bugüne kadar planlanan ${o.bugunPlanlanan}`, yol: "/uretim", dikkat: false },
     { ad: "Gönderilmeyi bekleyen sevkiyat", deger: o && o.hazirlananSevkiyat + o.kargodaSevkiyat, alt: o && `${o.hazirlananSevkiyat} kargoya verilecek · ${o.kargodaSevkiyat} kargoda`, yol: "/sevkiyat", dikkat: false },
     { ad: "Depodaki ürün", deger: o?.depodaUrun, yol: "/stok?gorunum=urun", dikkat: false },
-    { ad: "Min stokta ya da altında parça", deger: o?.minAltindaParca, yol: "/stok?gorunum=parca", dikkat: true },
+    { ad: "Min stok altındaki parçalar", deger: o?.minAltindaParca, yol: "/stok?gorunum=parca", dikkat: true },
   ];
 
   return (

@@ -142,7 +142,7 @@ export function UretimUyarilari({ ozet: o }: { ozet: AnaSayfaOzeti }) {
       <div className="panel-bas">
         <h3>Üretim Uyarıları</h3>
         {parcalar.length > 0
-          ? <span className="rozet rozet--uyari">{parcalar.length} parça min stokta ya da altında</span>
+          ? <span className="rozet rozet--uyari">{parcalar.length} parça min stok altında</span>
           : <span className="rozet rozet--basari">Bütün parçalar min stoğun üstünde</span>}
       </div>
       <div className="panel-ic uyari-duzeni">

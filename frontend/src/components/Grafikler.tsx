@@ -17,6 +17,7 @@ function gunFarki(t: string) {
 
 export function GecikenIsler({ veri }: { veri: GrafikVerisi | null }) {
   const liste = veri?.gecikenler ?? [];
+  if (!liste.length) return null;
   return (
     <section className={`panel${liste.length ? " panel--gecikme" : ""}`}>
       <div className="panel-bas">

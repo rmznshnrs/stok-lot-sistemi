@@ -57,7 +57,6 @@ export default function GirisFormu() {
           value={sifre}
           onChange={(e) => setSifre(e.target.value)}
         />
-        <Link href="/sifremi-unuttum" className="giris-unuttum">Şifremi unuttum</Link>
       </div>
 
       {hata && <div className="mesaj mesaj--error" role="alert">{hata}</div>}
