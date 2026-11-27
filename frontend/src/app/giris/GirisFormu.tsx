@@ -33,7 +33,7 @@ export default function GirisFormu() {
   }
 
   return (
-    <form className="kart kart--giris" onSubmit={gonder}>
+    <form className="kart kart--giris" onSubmit={gonder} autoComplete="off">
       <h2>MKC Teknoloji</h2>
 
       <div className="alan">
@@ -41,7 +41,7 @@ export default function GirisFormu() {
         <input
           id="kullaniciAdi"
           className="girdi"
-          autoComplete="username"
+          autoComplete="off"
           autoFocus
           required
           value={kullaniciAdi}

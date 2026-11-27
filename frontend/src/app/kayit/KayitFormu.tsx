@@ -50,7 +50,7 @@ export default function KayitFormu() {
   }
 
   return (
-    <form className="kart kart--giris" onSubmit={gonder}>
+    <form className="kart kart--giris" onSubmit={gonder} autoComplete="off">
       <div className="baslik-grup">
         <h2>MKC Teknoloji</h2>
         <span className="not">Kayıt ol</span>
@@ -68,11 +68,11 @@ export default function KayitFormu() {
       </div>
       <div className="alan">
         <label htmlFor="kayit-kullaniciAdi">Kullanıcı adı</label>
-        <input className="girdi" required maxLength={50} autoComplete="username" {...alan("kullaniciAdi")} />
+        <input className="girdi" required maxLength={50} autoComplete="off" {...alan("kullaniciAdi")} />
       </div>
       <div className="alan">
         <label htmlFor="kayit-eposta">E-posta</label>
-        <input type="email" className="girdi" required maxLength={200} autoComplete="email" {...alan("eposta")} />
+        <input type="email" className="girdi" required maxLength={200} autoComplete="off" {...alan("eposta")} />
       </div>
       <div className="alan">
         <label htmlFor="kayit-sifre">Şifre</label>
